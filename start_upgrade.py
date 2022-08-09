@@ -52,7 +52,12 @@ for device in devices:
       state  = send_ping.check(column[1])
       if state == "down"
         sys.exit("DEVICE HAS NOT COME UP!!!MANUAL INTERVENTION REQUIRED")
-
+      else:
+        get_all_state.vip(column[1],username,password)
+        get_all_state.pool(column[1],username,password)
+        diff_result = diff_files()
+        if diff_result == "difference":
+           sys.exit("DIFFERENCE DETECTED BETWEEN PRE AND POST STATUS")
 
 for device in devices:
   column = device.split()
