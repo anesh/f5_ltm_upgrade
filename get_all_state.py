@@ -51,9 +51,4 @@ def pool(hostname,username,password,outfile):
 
 
 
-#vipresults = vip("10.124.5.244","admin","born2run")
-with open("my_output_file.txt", "w") as out:
-  vip("10.124.5.244","admin","born2run",out)
-with open("my_output_file.txt", "a") as out:
-  pool("10.124.5.244","admin","born2run",out)
 

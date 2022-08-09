@@ -2,6 +2,7 @@ import os
 import requests
 import json
 import sys
+import time
 requests.packages.urllib3.disable_warnings()
 
 def get_volumes(hostname,username,password):
@@ -29,6 +30,7 @@ def install(hostname,username,password,image_name,vname):
     r = requests.post("https://"+hostname+"/mgmt/tm/sys/software/block-device-image",data=json.dumps(load_payload),auth=(username,password),headers=headers,verify=False)
     print r.status_code
     print r.text
+    time.sleep(5)
     flag = True
     while(flag):
       r = requests.get("https://"+hostname+"/mgmt/tm/sys/software/volume/",auth=(username,password),headers=headers,verify=False)

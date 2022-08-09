@@ -5,9 +5,14 @@ import json
 import backup
 import load_config
 import failover_status
+import diff_files
+import paramiko
+import install_image
+import get_all_state
+import time
 requests.packages.urllib3.disable_warnings()
 
-f1 = open('/home/anesh/f5devices.txt', 'r')
+f1 = open('/home/ctc/f5devices.txt', 'r')
 
 devices = f1.readlines()
 username = os.environ['f5username']
@@ -21,7 +26,7 @@ for device in devices:
   column = device.split()
   filename = column[0]+ my_date
   try:
-    
+    device_fo = failover_status.get() 
     if  device_fo['active'] == column[1]:
       print "saving current running configuration"
       load_config.save(column[1],username,password)
@@ -30,8 +35,11 @@ for device in devices:
       config_sync.start()
     print "saving ucs and qkview files"    
     backup.start_backup(column[1],username,password,filename)
-    get_all_state.vip(column[1],username,password)
-    get_all_state.pool(column[1],username,password)
+    with open(column[1]+"pre", "w") as out:
+      get_all_state.vip(column[1],username,password,out)
+    with open(column[1]+"pre", "a") as out:
+      get_all_state.pool(column[1],username,password,out)
+
 
     
        
@@ -45,17 +53,20 @@ for device in devices:
     vname = install_image.get_volumes(column[1],username,password)
     first_strip = vname.strip('1')
     second_strip = first_strip.strip('/')
-    status = install_image.install(column[1],username,password,column[3],second_strip)
-    if status == complete:
+    status = install_image.install(column[1],username,password,column[2],second_strip)
+    if status == "complete":
       install_image.change_boot(column[1],username,password,second_strip)
       time.sleep(5)
       state  = send_ping.check(column[1])
-      if state == "down"
+      if state == "down":
         sys.exit("DEVICE HAS NOT COME UP!!!MANUAL INTERVENTION REQUIRED")
       else:
-        get_all_state.vip(column[1],username,password)
-        get_all_state.pool(column[1],username,password)
-        diff_result = diff_files()
+        with open(column[1]+"post", "w") as out:
+          get_all_state.vip(column[1],username,password,out)
+        with open(column[1]+"post", "a") as out:
+          get_all_state.pool(column[1],username,password,out)
+
+        diff_result = diff_files.start(column[1])
         if diff_result == "difference":
            sys.exit("DIFFERENCE DETECTED BETWEEN PRE AND POST STATUS")
 
@@ -63,7 +74,7 @@ for device in devices:
   column = device.split()
   device_fo = failover_status.get()
   current_tmos = get_tmos_ver.start(username,password,column[1])
-  if device_fo['active'] == column[1] and current_tmos not in column[3]
+  if device_fo['active'] == column[1] and current_tmos not in column[3]:
     force_standby.post(username,password,column[1])
     if device_fo['standby'] == column[1]:
       vname = install_image.get_volumes(column[1],username,password)
@@ -74,7 +85,7 @@ for device in devices:
          install_image.change_boot(column[1],username,password,second_strip)
          time.sleep(5)
          state  = send_ping.check(column[1])
-         if state == "down"
+         if state == "down":
            sys.exit("DEVICE HAS NOT COME UP!!!MANUAL INTERVENTION REQUIRED")
 
 

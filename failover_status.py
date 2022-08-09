@@ -36,8 +36,6 @@ def get():
   return device_fo
 
 
-status = get()
-print status
 
 
 
