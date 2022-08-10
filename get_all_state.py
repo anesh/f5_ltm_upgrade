@@ -23,7 +23,7 @@ def vip(hostname,username,password,outfile):
     if "13" in ver:
       vipr= vip+"=>"+data['entries']['https://localhost/mgmt/tm/ltm/virtual/'+vip+'/~Common~'+vip+'/stats']['nestedStats']['entries']['status.availabilityState']['description']
     else:
-      vipr= vip+"=>"+data['entries']['https://localhost/mgmt/tm/ltm/virtual/~Common~'+vip+'/stats']['nestedStats']['entries']['status.availabilityState']['description'
+      vipr= vip+"=>"+data['entries']['https://localhost/mgmt/tm/ltm/virtual/~Common~'+vip+'/stats']['nestedStats']['entries']['status.availabilityState']['description']
     outfile.write(str(vipr + '\n'))
 
 def pool(hostname,username,password,outfile):

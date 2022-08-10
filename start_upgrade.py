@@ -73,27 +73,29 @@ for device in devices:
               get_all_state.pool(column[1],username,password,out)
 
             diff_result = diff_files.start(column[1])
-            if diff_result == "difference":
+            if diff_result == "different":
               sys.exit("DIFFERENCE DETECTED BETWEEN PRE AND POST STATUS")
 
 for device in devices:
   column = device.split()
   device_fo = failover_status.get()
   current_tmos = get_tmos_ver.start(username,password,column[1])
-  if device_fo['active'] == column[1] and current_tmos not in column[3]:
+  if device_fo['active'] == column[1] and current_tmos not in column[2]:
     force_standby.post(username,password,column[1])
     if device_fo['standby'] == column[1]:
       vname = install_image.get_volumes(column[1],username,password)
       first_strip = vname.strip('1')
       second_strip = first_strip.strip('/')
-      status = install_image.install(column[1],username,password,column[3],second_strip)
+      status = install_image.install(column[1],username,password,column[2],second_strip)
       if status == complete:
          install_image.change_boot(column[1],username,password,second_strip)
-         time.sleep(5)
-         state  = send_ping.check(column[1])
-         if state == "down":
-           sys.exit("DEVICE HAS NOT COME UP!!!MANUAL INTERVENTION REQUIRED")
-
+         state = wait_for_down.check(column[1])
+         if state == "rebooted":
+           state = wait_for_up.check(column[1])
+           if state == "up":
+             mcpstate = get_mcpd_status.start(username,password,column[1])
+             if mcpstate == 'mcpdup':
+               print 'UPGRADE COMPLETE'
 
 
 
