@@ -14,6 +14,7 @@ import send_ping
 import get_tmos_ver
 import wait_for_down
 import wait_for_up
+import get_mcpd_status
 requests.packages.urllib3.disable_warnings()
 
 f1 = open('/home/ctc/f5devices.txt', 'r')
@@ -66,14 +67,16 @@ for device in devices:
       if state == "rebooted":
         state = wait_for_up.check(column[1])
         if state == "up":
-          with open(column[1]+"post", "w") as out:
-            get_all_state.vip(column[1],username,password,out)
-          with open(column[1]+"post", "a") as out:
-            get_all_state.pool(column[1],username,password,out)
+          mcpstate = get_mcpd_status.start(username,password,column[1])
+          if mcpstate == 'mcpdup': 
+            with open(column[1]+"post", "w") as out:
+              get_all_state.vip(column[1],username,password,out)
+            with open(column[1]+"post", "a") as out:
+              get_all_state.pool(column[1],username,password,out)
 
-          diff_result = diff_files.start(column[1])
-          if diff_result == "difference":
-             sys.exit("DIFFERENCE DETECTED BETWEEN PRE AND POST STATUS")
+            diff_result = diff_files.start(column[1])
+            if diff_result == "difference":
+              sys.exit("DIFFERENCE DETECTED BETWEEN PRE AND POST STATUS")
 
 for device in devices:
   column = device.split()
