@@ -15,6 +15,7 @@ import get_tmos_ver
 import wait_for_down
 import wait_for_up
 import get_mcpd_status
+import config_sync
 requests.packages.urllib3.disable_warnings()
 
 f1 = open('/home/ctc/f5devices.txt', 'r')
@@ -30,26 +31,23 @@ for device in devices:
 
   column = device.split()
   filename = column[0]+ my_date
-  try:
-    device_fo = failover_status.get() 
-    if  device_fo['active'] == column[1]:
-      print "saving current running configuration"
-      load_config.save(column[1],username,password)
-      print "verifying running configuration for errors"
-      load_config.load_verify(column[1],username,password)
-      config_sync.start()
-    print "saving ucs and qkview files"    
-    backup.start_backup(column[1],username,password,filename)
-    with open(column[1]+"pre", "w") as out:
-      get_all_state.vip(column[1],username,password,out)
-    with open(column[1]+"pre", "a") as out:
-      get_all_state.pool(column[1],username,password,out)
+  device_fo = failover_status.get() 
+  if  device_fo['active'] == column[1]:
+    print "saving current running configuration"
+    load_config.save(column[1],username,password)
+    print "verifying running configuration for errors"
+    load_config.load_verify(column[1],username,password)
+    config_sync.start(username,password,column[1])
+  print "saving ucs and qkview files"    
+  backup.start_backup(column[1],username,password,filename)
+  with open(column[1]+"pre", "w") as out:
+    get_all_state.vip(column[1],username,password,out)
+  with open(column[1]+"pre", "a") as out:
+    get_all_state.pool(column[1],username,password,out)
 
 
     
        
-  except Exception as e:
-    print e
 
 for device in devices:
   column = device.split()
