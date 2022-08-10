@@ -16,6 +16,7 @@ import wait_for_down
 import wait_for_up
 import get_mcpd_status
 import config_sync
+import force_standby
 requests.packages.urllib3.disable_warnings()
 
 f1 = open('/home/ctc/f5devices.txt', 'r')
@@ -82,6 +83,7 @@ for device in devices:
   current_tmos = get_tmos_ver.start(username,password,column[1])
   if device_fo['active'] == column[1] and current_tmos not in column[2]:
     force_standby.post(username,password,column[1])
+    device_fo = failover_status.get()
     if device_fo['standby'] == column[1]:
       vname = install_image.get_volumes(column[1],username,password)
       first_strip = vname.strip('1')

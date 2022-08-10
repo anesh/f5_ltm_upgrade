@@ -18,7 +18,6 @@ def post(username,password,device):
   except Exception as e:
     print e
 
-post()
 
 
 
