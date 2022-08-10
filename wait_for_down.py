@@ -5,11 +5,9 @@ def check(hostname):
   while(flag):
     response = os.system("ping -c 10 " + hostname +" > /dev/null 2>&1")
     if response == 0:
-      state = 'up'
-      print "F5 is UP"
-      flag = False
+      print "F5 is UP, going to reboot"
     else:
-      print "F5 is rebooting"
-      state = 'down'
+      flag = False
+      state = "rebooted"
   return state
 

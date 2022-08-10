@@ -1,12 +1,12 @@
 import os
 def start(hostname):
-  with open(column[1]+'pre', 'r') as file1:
-    with open(column[1]+'post', 'r') as file2:
+  with open(hostname+'pre', 'r') as file1:
+    with open(hostname+'post', 'r') as file2:
       same = set(file1).difference(file2)
   same.discard('\n')
 
-  with open(column[1]+'post', 'r') as file1:
-    with open(column[1]+'pre', 'r') as file2:
+  with open(hostname+'post', 'r') as file1:
+    with open(hostname+'pre', 'r') as file2:
       same1 = set(file1).difference(file2)
   same1.discard('\n')
 

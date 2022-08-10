@@ -10,6 +10,10 @@ import paramiko
 import install_image
 import get_all_state
 import time
+import send_ping
+import get_tmos_ver
+import wait_for_down
+import wait_for_up
 requests.packages.urllib3.disable_warnings()
 
 f1 = open('/home/ctc/f5devices.txt', 'r')
@@ -56,19 +60,20 @@ for device in devices:
     status = install_image.install(column[1],username,password,column[2],second_strip)
     if status == "complete":
       install_image.change_boot(column[1],username,password,second_strip)
-      time.sleep(5)
-      state  = send_ping.check(column[1])
-      if state == "down":
-        sys.exit("DEVICE HAS NOT COME UP!!!MANUAL INTERVENTION REQUIRED")
-      else:
-        with open(column[1]+"post", "w") as out:
-          get_all_state.vip(column[1],username,password,out)
-        with open(column[1]+"post", "a") as out:
-          get_all_state.pool(column[1],username,password,out)
+      #time.sleep(20)
+      #state  = send_ping.check(column[1])
+      state = wait_for_down.check(column[1])
+      if state == "rebooted":
+        state = wait_for_up.check(column[1])
+        if state == "up":
+          with open(column[1]+"post", "w") as out:
+            get_all_state.vip(column[1],username,password,out)
+          with open(column[1]+"post", "a") as out:
+            get_all_state.pool(column[1],username,password,out)
 
-        diff_result = diff_files.start(column[1])
-        if diff_result == "difference":
-           sys.exit("DIFFERENCE DETECTED BETWEEN PRE AND POST STATUS")
+          diff_result = diff_files.start(column[1])
+          if diff_result == "difference":
+             sys.exit("DIFFERENCE DETECTED BETWEEN PRE AND POST STATUS")
 
 for device in devices:
   column = device.split()

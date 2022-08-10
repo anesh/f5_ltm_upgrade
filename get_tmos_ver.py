@@ -21,7 +21,6 @@ def start(username,password,device):
     print e
   return version
 
-start("admin","born2run","10.124.5.243")
 
 
 
