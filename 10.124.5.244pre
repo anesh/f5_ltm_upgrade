@@ -1,0 +1,12 @@
+Total VIPS:3
+test1_vs=>unknown
+test2_vs=>unknown
+test3_vs=>unknown
+Total POOLS:3
+test1_pool=>unknown
+*192.168.1.1:80=>unknown
+test2_pool=>unknown
+*192.168.1.2:80=>unknown
+test3_pool=>unknown
+*192.168.1.3:80=>unknown
+*192.168.1.4:80=>unknown

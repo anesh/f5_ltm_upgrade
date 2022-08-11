@@ -83,6 +83,7 @@ for device in devices:
   current_tmos = get_tmos_ver.start(username,password,column[1])
   if device_fo['active'] == column[1] and current_tmos not in column[2]:
     force_standby.post(username,password,column[1])
+    time.sleep(5)
     device_fo = failover_status.get()
     if device_fo['standby'] == column[1]:
       vname = install_image.get_volumes(column[1],username,password)

@@ -20,7 +20,7 @@ def start_backup(hostname,username,password,filename):
   uri = get_task_uri.strip('https://localhost')
   r = requests.put("https://"+hostname+"/"+uri,data=json.dumps(state_payload),auth=(username,password),headers=headers,verify=False)
   print r.text
-  time.sleep(5)
+  time.sleep(10)
   while(taskstatus):
     r= requests.get("https://"+hostname+"/"+uri,auth=(username,password),verify=False)
     state = r.json()
