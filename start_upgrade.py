@@ -18,6 +18,7 @@ import wait_for_up
 import get_mcpd_status
 import config_sync
 import force_standby
+import get_active_volume
 requests.packages.urllib3.disable_warnings()
 
 f1 = open('/home/ctc/f5devices.txt', 'r')
@@ -33,6 +34,7 @@ for device in devices:
 
   column = device.split()
   filename = column[0]+ my_date
+  get_active_volume.get()
   device_fo = failover_status.get() 
   if  device_fo['active'] == column[1]:
     print "saving current running configuration"
