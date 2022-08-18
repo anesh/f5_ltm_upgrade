@@ -4,7 +4,7 @@ import json
 import sys
 requests.packages.urllib3.disable_warnings()
 
-f1 = open('/home/ctc/f5devices.txt', 'r')
+f1 = open('f5devices.txt', 'r')
 devices = f1.readlines()
 username = os.environ['f5username']
 password = os.environ['f5password']
