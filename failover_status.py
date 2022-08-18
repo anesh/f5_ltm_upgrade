@@ -16,6 +16,7 @@ def get():
   for device in devices:
     column = device.split()
     r = requests.get("https://"+column[1]+"/mgmt/tm/cm/failover-status",auth=(username,password),verify=False)
+    print r.status_code
     status =  r.json()
     nestedstat = status['entries']['https://localhost/mgmt/tm/cm/failover-status/0']['nestedStats']['entries']
     state = nestedstat['status']['description']

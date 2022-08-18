@@ -1,4 +1,5 @@
 import os
+import sys
 import datetime
 import requests
 import json
@@ -24,7 +25,7 @@ f1 = open('/home/ctc/f5devices.txt', 'r')
 devices = f1.readlines()
 username = os.environ['f5username']
 password = os.environ['f5password']
-
+counter = 0
 for device in devices:
   temp_date = str(datetime.datetime.utcnow())
   split_date = str.split(temp_date)
@@ -57,7 +58,7 @@ for device in devices:
     vname = install_image.get_volumes(column[1],username,password)
     first_strip = vname.strip('1')
     second_strip = first_strip.strip('/')
-    status = install_image.install(column[1],username,password,column[2],second_strip)
+    status = install_image.install(column[1],username,password,column[2],second_strip,"/mgmt/tm/sys/software/block-device-image")
     if status == "complete":
       install_image.change_boot(column[1],username,password,second_strip)
       #time.sleep(20)
@@ -89,8 +90,8 @@ for device in devices:
       vname = install_image.get_volumes(column[1],username,password)
       first_strip = vname.strip('1')
       second_strip = first_strip.strip('/')
-      status = install_image.install(column[1],username,password,column[2],second_strip)
-      if status == complete:
+      status = install_image.install(column[1],username,password,column[2],second_strip,"/mgmt/tm/sys/software/block-device-image")
+      if status == "complete":
          install_image.change_boot(column[1],username,password,second_strip)
          state = wait_for_down.check(column[1])
          if state == "rebooted":
