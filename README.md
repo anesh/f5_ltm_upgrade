@@ -31,11 +31,11 @@ it stops the upgrade, if no differences are identified it proceeds with the next
 
 
 ```
-git clone https://bitbucket.cantire.com/scm/enia/f5.git
+git clone https://github.com/anesh/f5_ltm_upgrade.git
 ```
 
 ```
-cd f5/implementation/f5_ltm_upgrade
+cd f5_ltm_upgrade
 ```
 
 * create a file called "f5devices.txt" and add the devices to be upgarded along with image in the below format
