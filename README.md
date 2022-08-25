@@ -2,9 +2,9 @@
 
 ### Description
 
-- the script gathers ucs and qkview from both the device pairs and uploads to the the SFTP server
-- it then gathers the state of all the VIPs and Pools from  bothe device pairs and stores the files
-- It stores the state of the active volumes in bothe devices
+- the script gathers ucs and qkview from both the device pairs and uploads to an SFTP server defind by environment variables
+- it then gathers the state of all the VIPs and Pools from  both device pairs and stores the files locally
+- It stores the state of the active volumes from both devices
 - it identifies the active device and saves the running config and does a verify load to check for config errors
 - it then proceeds to find the standby device and install the image on a inactive volume
 - once installation of image is complete it proceeds to reboot to volume with new image
