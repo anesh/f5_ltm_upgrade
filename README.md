@@ -13,18 +13,22 @@ it stops the upgrade, if no differences are identified it proceeds with the next
 
 ### Pre-requisites
 
-* Make Sure you have the correct bash profile has the below cofigurations
-
-```
-alias python=/opt/rh/python27/root/usr/bin/python2.7
-source /etc/environment
-```
+* tested with Python2.7
+* set below environment variables
+  - f5username
+  - f5password
+  - username_ftp
+  - password_ftp
+  - server_ip_ftp
+* install below python packages
+  - pip install paramiko
+  - pip install requests
+  - pip install json
 
 
 ### Steps to Execute automation, once seed file is peer reviewd:
 
 
-* login to Automation server[10.2.53.22]
 
 ```
 git clone https://bitbucket.cantire.com/scm/enia/f5.git
@@ -36,8 +40,8 @@ cd f5/implementation/f5_ltm_upgrade
 
 * create a file called "f5devices.txt" and add the devices to be upgarded along with image in the below format
 ```
-Gw-cr-F5-2-lab 10.124.5.244 BIGIP-15.1.6-0.0.8.iso
-Gw-cr-F5-1-lab 10.124.5.243 BIGIP-15.1.6-0.0.8.iso
+F5-2-lab 10.124.5.244 BIGIP-15.1.6-0.0.8.iso
+F5-1-lab 10.124.5.243 BIGIP-15.1.6-0.0.8.iso
 ```
 
 * To run the automation exceute the below command

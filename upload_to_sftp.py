@@ -2,9 +2,10 @@ import paramiko
 
 username = os.environ['username_ftp']
 password = os.environ['password_ftp']
+server_ip = os.environ['server_ip_ftp']
 
 def upload(filename):
-  sftpserver = "10.2.53.11"
+  sftpserver = server_ip
   sftpuser = username
   sftppass = password
   ssh = paramiko.SSHClient()
