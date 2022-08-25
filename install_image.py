@@ -77,6 +77,3 @@ def change_boot(hostname,username,password,vname):
     print e
 
 
-#get_volumes("10.124.5.243","admin","born2run")
-#install("10.124.5.243","admin","born2run","BIGIP-15.1.4.1-0.0.15.iso","HD1.2")
-#change_boot("10.124.5.243","admin","born2run","HD1.3")
