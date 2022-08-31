@@ -26,7 +26,7 @@ it stops the upgrade, if no differences are identified it proceeds with the next
   - pip install json
 
 
-### Steps to Execute automation, once seed file is peer reviewd:
+### Steps to Execute automation:
 
 
 
